@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html ng-app="itemList">
+  <head>
+    <!--make the web page responsive-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--include the bootstrap css file-->
+    <link rel="stylesheet" type="text/css" href="libraries/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="libraries/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="style.css" />
+        <!-- Scripts  -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="libraries/angular.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+  </head>
+
+  <body background="images/background.jpg" ng-controller="ListController as store" ng-app="">
+    <div ng-repeat="product in store.products">
+        <section ng-controller="PostController as tab">
+    <div class="row">
+  <div class="col-md-2"></div>
+    <div ng-init="items = [{title:'Wii console, games/Nintendo games', price: 100, category: 'games', description: 'Wii Console @ $100, Two Wii remotes @ $10 each, Wii games @ 20 each, Nintendo DS @ $50, Nintendo games @ $15 each', location: 'San Francisco', phone:'209-993-1175', email: 'joc@example.org', images: '00N0N_8zS9M2XbCqd_600x450.jpg'},
+                           {title:'12.5 Lenovo Laptop Lightweight', price: 200, category: 'laptop', description: 'Pick up in Sunnyvale Price is firm Lenovo X201 Thinkpad laptop in excellent working condition Light and powerful perfect for travelers and students The battery holds a good charge Lenovos Laptops are the best, reliable and the most sold on the market', location: 'Daly City', phone:'209-603-2050', email: 'joe@example.org', images: '00v0v_1zV0cl2ExQx_600x450.jpg'}]">
+    </div>
+  <div class="col-md-8">
+    <div class="row">
+        <div class="col-md-2"><a href="index.html"><img src="images/JVO.jpg" alt="JVO mini CL" height="128" width="142"></div>
+        <div class="col-md-8"></div>
+        <div class="col-md-2" id="log"><a href="">Login</a><br><a href="">Sign Up</a></div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+          <div class="dropdown">
+            <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+              Select location
+              <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1" ng-model="searchLocation">
+              <li><a href="https://goo.gl/maps/gNa64zJ1wiP2" target="_blank">San Francisco</a></li>
+              <li><a href="https://goo.gl/maps/kYAA43Z7xjr" target="_blank">Daly City</a></li>
+              <li><a href="https://goo.gl/maps/uXuN5kHFxrG2" target="_blank">Oakland</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-md-7">
+        <form class="navbar-form navbar-left" role="search">
+    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Search" ng-model="searchText" >
+    </div>
+</form>
+</div>
+
+    <div class="col-md-2">
+        <div class="nav nav-pills">
+
+            <div ng-class="{ active:tab.isSet(0)}" style="text-align:center;">
+              <Button href="" class="btn btn-info" ng-click="tab.setTab(0)">Post</button>
+            </div>
+          </div>
+    </div>
+    </div>
+      <div class="row"><img ng-show="!searchText.length" ng-hide="tab.isSet(0)" src="images/WhatYouDoMatters2.jpg" alt="buletine board" height="100%" width="100%">
+        <div id="searchTextResults" ng-show="searchText.length" >
+          <div ng-repeat="item in items | filter:searchText"  class="col-md-6">
+            <p><a href="" ng-click="showDetails = ! showDetails">{{item.title}} <strong>{{item.price | currency}}</strong></a></p>
+            <img id="galleryImg" ng-src="images/{{item.images}}"/>
+            <p>{{item.location}} - Price: {{item.price | currency}}</p>
+            <hr>
+            <div ng-show="showDetails">
+              <p><strong>Title: </strong>{{item.title}}</p>
+              <p><strong>Price: </strong>{{item.price | currency}}</p>
+              <p><strong>Description: </strong>{{item.description}}</p>
+              <p><strong>Location: </strong>{{item.location}}</p>
+              <p><strong>Phone: </strong>{{item.phone}}</p>
+              <p><strong>Email: </strong>{{item.email}}</p>
+              <hr>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--  POST -->
+      <div ng-show="tab.isSet(0)" class="col-md-8">
+          <h4>Your post:</h4>
+          <div ng-repeat="review in product.reviews">
+              <p>{{review.title}} </p>
+              <p>{{review.price | currency}}</p>
+              <p>{{review.description}}</p>
+              <p>{{review.location}}</p>
+              <p>{{review.phone}}</p>
+              <p>{{review.email}}</p>
+          </div>
+
+
+        <!--  Post Form -->
+        <form name="reviewForm" ng-controller="ItemController as reviewCtrl" ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
+
+          <!--  Post Form -->
+          <fieldset class="form-group">
+            <strong>Title: </strong>
+            <textarea ng-model="reviewCtrl.review.title" class="form-control" type="text" placeholder="title of your post..." title="Title" required></textarea>
+          </fieldset>
+          <fieldset class="form-group">
+            <strong>Description: </strong>
+            <textarea ng-model="reviewCtrl.review.description" class="form-control" type="text" placeholder="Description of your product goes here..." title="Description" required></textarea>
+          </fieldset>
+          <fieldset class="form-group">
+            <strong>Price: </strong>
+            <input ng-model="reviewCtrl.review.price" type="number" min="1" max="9999" size="4" class="form-control" placeholder="price" title="Description" style="width:20%;" required/>
+          </fieldset>
+          <fieldset class="form-group">
+            <strong>Location: </strong>
+            <input ng-model="reviewCtrl.review.location" type="text" class="form-control" placeholder="San Francisco" title="Location" style="width:40%;" required/>
+          </fieldset>
+          <fieldset class="form-group">
+            <strong>Phone Number: </strong>
+            <input ng-model="reviewCtrl.review.phone" type='tel' pattern='\d{3}[\-]\d{3}[\-]\d{4}' title='Phone' class="form-control" placeholder="ex: 209-603-2050" style="width:30%;" required/>
+          </fieldset>
+          <fieldset class="form-group">
+            <strong>Email: </strong>
+            <input ng-model="reviewCtrl.review.email" type="email" class="form-control" placeholder="jimmyDean@example.org" title="Email" style="width:50%;" required/>
+          </fieldset>
+          <fieldset class="form-group">
+            <input type="submit" class="btn btn-info" value="Submit Review" />
+          </fieldset>
+          <fieldset class="form-group">
+            <input type="button" onclick="window.location='calculate.html';" class="btn btn-info" value="Calculate your profit" />
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </div>
+
+   <div class="footer"></div>
+  </div>
+
+  <div class="col-md-2">
+  </div>
+</div>
+
+
+  </body>
+</html>

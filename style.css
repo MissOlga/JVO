@@ -1,0 +1,37 @@
+body {
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+    overflow: scroll;
+}
+.footer {
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    height:30px;
+}
+
+#log {
+  padding: 1% 4%;
+}
+
+#loc{
+	float:left;
+	padding-top: 3%;
+}
+
+.ng-invalid.ng-dirty{
+    border-color: #fa787e
+}
+
+.ng-valid.ng-dirty{
+    border-color: #78fa89
+}
+
+#galleryImg {
+    width: 75%;
+    height: 50%;
+    border: 3px solid #73AD21;
+}
